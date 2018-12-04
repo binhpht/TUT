@@ -1,16 +1,17 @@
 general:
-  id              : 1
-  batch_size      : 50
+  id              : test
+  batch_size      : 64
   batchnorm_flag  : true
   dropout_flag    : true
   dropout_rate    : 0.25
   dropout_position: 5
   loss            : mse
-  nb_epoch        : 30
+  nb_epoch        : 1
   output_act      : softmax
   optimizer       : adam
   patience        : 30
   seed            : 1234
+  use_bias        : True
 conv_params:      # CNN params
   channel_type    : first 
   batchnorm_axis  : -1
@@ -19,8 +20,8 @@ conv_params:      # CNN params
   conv_stride     : [1, 1]
   kernel_size     : [3, 3]
   nb_conv_filters : 64
-  deep_level: 15
+  deep_level: 18
   kernel_initializer : Orthogonal
 image_parames:
-  w               : 10
-  h               : 10
+  w               : 128
+  h               : 128

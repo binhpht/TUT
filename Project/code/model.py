@@ -15,16 +15,16 @@ from keras.layers import Input, Dense, Activation, ZeroPadding2D, BatchNormaliza
 from keras.layers import AveragePooling2D, MaxPooling2D, Dropout, GlobalMaxPooling2D, GlobalAveragePooling2D
 from keras.models import Model
 import glob
-from PIL import Image
 # for current forlder
 import os 
 from skimage import color
 from skimage import io
 import fnmatch
+import keras.backend as K
 
 #Pham Huu Thanh Binh
 
-def model_architecture(traning_data,learner_params):
+def model_architecture(learner_params,image_channels = 1):
     """
     Design the architecture for model
     
@@ -40,13 +40,12 @@ def model_architecture(traning_data,learner_params):
     batchnorm_flag = learner_params['general']['batchnorm_flag']
     dropout_flag = learner_params['general']['dropout_flag']
     dropout_position = learner_params['general']['dropout_position']
-
+    use_bias = learner_params['general']['use_bias']
     dropout_rate = learner_params['general']['dropout_rate']
     print(dropout_rate)
     output_act = learner_params['general']['output_act']
     
     # CNN general model parameters
-    input_shape = traning_data.shape
     nb_conv_filters = learner_params['conv_params']['nb_conv_filters']
     kernel_size = learner_params['conv_params']['kernel_size']
     conv_act = learner_params['conv_params']['conv_act']
@@ -56,19 +55,17 @@ def model_architecture(traning_data,learner_params):
 
 
 
-    X_input = Input(traning_data[1,:].shape)
+    X_input = Input(shape=(None,None,image_channels))
     # CONV -> BN -> RELU Block applied to X
-    X = Conv2D(nb_conv_filters, kernel_size, strides = conv_stride, padding=conv_border_mode, name = 'conv0')(X_input)
+    X = Conv2D(nb_conv_filters, kernel_size, strides = conv_stride, kernel_initializer='Orthogonal',padding=conv_border_mode, name = 'conv0')(X_input)
     #X = BatchNormalization(axis = 3, name = 'bn0')(X)
     X = Activation(conv_act)(X)
      # 15 layers, Conv+BN+relu
     for i in range(deep_level):
-        X = Conv2D(nb_conv_filters, kernel_size , strides=conv_stride, padding=conv_border_mode)(X)
-        if (dropout_flag == True and  i % dropout_position == 0):
-            X = (Dropout(float(dropout_rate)))(X)
+        X = Conv2D(nb_conv_filters, kernel_size , strides=conv_stride,kernel_initializer='Orthogonal', padding=conv_border_mode,use_bias=False)(X)
         X = BatchNormalization(axis=-1, epsilon=1e-3)(X)
         X = Activation(conv_act)(X)   
-    X = Conv2D(1,kernel_size, strides=conv_stride, padding=conv_border_mode)(X)
+    X = Conv2D(1,kernel_size, strides=conv_stride,kernel_initializer='Orthogonal', padding=conv_border_mode)(X)
     X = Subtract()([X_input, X])   # input - noise
     model = Model(inputs=X_input, outputs=X)
     return model

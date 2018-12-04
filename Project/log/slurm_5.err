@@ -1,0 +1,15 @@
+Using TensorFlow backend.
+2018-12-03 11:14:01.372158: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+2018-12-03 11:14:01.558512: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1344] Found device 0 with properties: 
+name: Tesla P100-PCIE-12GB major: 6 minor: 0 memoryClockRate(GHz): 1.3285
+pciBusID: 0000:83:00.0
+totalMemory: 11.91GiB freeMemory: 11.63GiB
+2018-12-03 11:14:01.558556: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1423] Adding visible gpu devices: 0
+2018-12-03 11:14:01.939384: I tensorflow/core/common_runtime/gpu/gpu_device.cc:911] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-12-03 11:14:01.939441: I tensorflow/core/common_runtime/gpu/gpu_device.cc:917]      0 
+2018-12-03 11:14:01.939449: I tensorflow/core/common_runtime/gpu/gpu_device.cc:930] 0:   N 
+2018-12-03 11:14:01.939713: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1041] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11264 MB memory) -> physical GPU (device: 0, name: Tesla P100-PCIE-12GB, pci bus id: 0000:83:00.0, compute capability: 6.0)
+Traceback (most recent call last):
+  File "/home/pham/projects/denosing/code/main.py", line 92, in <module>
+    plt.plot(history.history['loss'])
+KeyError: 'acc'
